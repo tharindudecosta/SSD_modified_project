@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+
+.input {
+  @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light;
+}
+
+.input-error {
+  @apply bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400;
+}
+
+.checkbox-container {
+  @apply flex gap-3 items-center;
+}
+
+.checkbox-container label {
+  @apply text-lg text-gray-900 dark:text-white;
+}
+
+.checkbox {
+  @apply bg-gray-50 rounded focus:ring-orange-500 focus:border-orange-500 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500;
+}
+
+.swal2-confirm.swal2-styled {
+  @apply !bg-orange-400;
+}
+
+@tailwind utilities;

@@ -1,0 +1,99 @@
+.main-body{
+  padding: 0;
+  margin: 0;
+  height: 80vh;
+}
+
+.section-heading {
+  color: #2c2c2c;
+  margin: 16px;
+  margin-top: auto;
+  margin-bottom: 15px;
+  font-size: 35px;
+}
+.tiles-common {
+  float: left;
+  width: 20%;
+  margin: 15px;
+  height: 140px;
+  font-size: 28px;
+  color: white;
+  border-radius: 15px;
+  transition: transform 0.3s;
+}
+.tiles-common:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+  box-shadow: 0 8px 32px -4px #2b3644;
+  transition: transform 0.6s;
+}
+
+/* home page */
+.admin-tile {
+  background-color: #1f2937;
+  /* width: 42%; */
+}
+.supplier-tile {
+  background-color: #2b3644;
+}
+.site-manager-tile {
+  background-color: #444b55;
+}
+.manager-tile {
+  background-color: #414a57;
+}
+.spec-user-tile {
+  background-color: #5b9410;
+}
+
+.tile-text {
+  /* display: flex; */
+  align-items: center;
+  position: relative;
+  left: 8%;
+  top: 60%;
+}
+
+.tile-icon {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 5%;
+  top: 15%;
+}
+
+.snellenIcon{
+  width: 70px;
+}
+.optometristIcon{
+  width: 60px;
+  margin-left: 9px;
+}
+.snellen-tile {
+  background-color: #8ab5d4;
+}
+
+.tile-text2 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 8%;
+  top: 14%;
+}
+
+.tile-icon2 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 20px;
+  margin-bottom: -10px;
+}
+
+
+.tile-text3 {
+  display: flex;
+  align-items: center;
+  position: relative;
+  left: 8%;
+  top: 17%;
+}
