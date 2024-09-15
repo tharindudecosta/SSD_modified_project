@@ -1,9 +1,18 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
 
+const isValidEmail = (email) => {
+  const regex = /^\S+@\S+\.\S+$/;
+  return regex.test(email);
+};
+
 
 const createSupplier = (req, res) => {
   const { supplierName, address, contactPerson, email, fax, password } =
     req.body;
+
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
 
   const supplier = new Supplier({
     supplierName:supplierName.toString(),
@@ -74,7 +83,11 @@ const createMaterialQuotation = (req, res) => {
 const loginSupplier = (req, res) => {
   const { email, password } = req.body;
 
-  Supplier.findOne({ email: email }, (err, doc) => {
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
+
+  Supplier.findOne({ email: email.toString() }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "Supplier not found" });
     }

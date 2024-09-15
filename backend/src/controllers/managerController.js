@@ -1,9 +1,19 @@
 import { Manager, OrderRequest, Product } from "../models/index.js";
 
+const isValidEmail = (email) => {
+  const regex = /^\S+@\S+\.\S+$/;
+  return regex.test(email);
+};
+
+
 const createManager = (req, res) => {
   const { manName, department, contactNumber, email, password, customId } =
     req.body;
 
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
+    
   const manager = new Manager({
     manName:manName.toString(),
     department:department.toString(),
@@ -32,7 +42,11 @@ const getManagers = (req, res) => {
 const loginManager = (req, res) => {
   const { email, password } = req.body;
 
-  Manager.findOne({ email: email }, (err, doc) => {
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
+
+  Manager.findOne({ email: email.toString() }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "Manager not found" });
     }
@@ -117,6 +131,10 @@ const deleteManager = (req, res) => {
 const updateManager = (req, res) => {
   const { manName, department, contactNumber, email, password, customId } =
     req.body;
+
+  if(!isValidEmail(email)){
+    res.status(500).json({ error: "Invalid Email" })
+  }
 
   const newManager = new Manager({
     manName: manName.toString(),
