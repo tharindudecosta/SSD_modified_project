@@ -5,12 +5,12 @@ const createManager = (req, res) => {
     req.body;
 
   const manager = new Manager({
-    manName,
-    department,
-    contactNumber,
-    email,
-    password,
-    customId,
+    manName:manName.toString(),
+    department:department.toString(),
+    contactNumber:contactNumber.toString(),
+    email:email.toString(),
+    password:password.toString(),
+    customId:customId.toString(),
   });
 
   Manager.create(manager, (err, data) => {
@@ -119,12 +119,12 @@ const updateManager = (req, res) => {
     req.body;
 
   const newManager = new Manager({
-    manName: manName,
-    department: department,
-    contactNumber: contactNumber,
-    email: email,
-    password: password,
-    customId: customId,
+    manName: manName.toString(),
+    department: department.toString(),
+    contactNumber: contactNumber.toString(),
+    email: email.toString(),
+    password: password.toString(),
+    customId: customId.toString(),
   });
 
   Manager.updateOne({ customId: customId }, { newManager }, (err, data) => {

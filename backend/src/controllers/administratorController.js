@@ -4,10 +4,10 @@ const createAdministrator = (req, res) => {
   const { employeeName, contactNumber, email, password } = req.body;
 
   const manager = new Administrator({
-    employeeName,
-    contactNumber,
-    email,
-    password,
+    employeeName:employeeName.toString(),
+    contactNumber:contactNumber,
+    email:email.toString(),
+    password:password.toString(),
   });
 
   Administrator.create(manager, (err, data) => {
@@ -18,6 +18,8 @@ const createAdministrator = (req, res) => {
 
 const loginAdministrator = (req, res) => {
   const { email, password } = req.body;
+
+// email check
 
   Administrator.findOne({ email: email }, (err, doc) => {
     if (err) {

@@ -4,11 +4,11 @@ const createSiteManager = (req, res) => {
   const { employeeName, contactNumber, email, password,customId } = req.body;
 
   const siteManager = new SiteManager({
-    employeeName:employeeName,
-    contactNumber:contactNumber,
-    email:email,
-    password:password,
-    customId:customId
+    employeeName:employeeName.toString(),
+    contactNumber:contactNumber.toString(),
+    email:email.toString(),
+    password:password.toString(),
+    customId:customId.toString()
   });
 
   SiteManager.create(siteManager, (err, data) => {
@@ -27,6 +27,8 @@ const getSiteMangers = (req, res) => {
 const loginSiteManager = (req, res) => {
   const { email, password } = req.body;
 
+
+  
   SiteManager.findOne({ email: email }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "SiteManager not found" });
@@ -44,10 +46,10 @@ const loginSiteManager = (req, res) => {
 const createOrderRequest = (req, res) => {
   const { products, totalAmount, siteManager, supplier } = req.body;
   const orderRequest = new OrderRequest({
-    products,
-    totalAmount,
-    siteManager,
-    supplier,
+    products:products.toString(),
+    totalAmount:totalAmount.toString(),
+    siteManager:siteManager.toString(),
+    supplier:supplier.toString(),
   });
 
   OrderRequest.create(orderRequest, (err, data) => {
@@ -71,11 +73,11 @@ const updateSiteManager = (req, res) => {
   const { employeeName, newContactNumber, newEmail, password,customId } = req.body;
 
   const siteManager = new SiteManager({
-    employeeName:employeeName,
-    contactNumber:newContactNumber,
-    email:newEmail,
-    password:password,
-    customId:customId
+    employeeName:employeeName.toString(),
+    contactNumber:newContactNumber.toString(),
+    email:newEmail.toString(),
+    password:password.toString(),
+    customId:customId.toString()
   });
 
   SiteManager.updateOne({customId:customId},{siteManager}, (err, data) => {

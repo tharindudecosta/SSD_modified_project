@@ -1,17 +1,17 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
 
-// IT20610166
+
 const createSupplier = (req, res) => {
   const { supplierName, address, contactPerson, email, fax, password } =
     req.body;
 
   const supplier = new Supplier({
-    supplierName,
-    address,
-    contactPerson,
-    email,
-    fax,
-    password,
+    supplierName:supplierName.toString(),
+    address:address.toString(),
+    contactPerson:contactPerson.toString(),
+    email:email.toString(),
+    fax:fax.toString(),
+    password:password.toString(),
   });
   Supplier.create(supplier, (err, data) => {
     if (err) {
@@ -47,8 +47,8 @@ const createMaterialQuotation = (req, res) => {
   const { productName, unitOfMeasure, qty } = req.body;
 
   const product = new Product({
-    productName,
-    unitOfMeasure,
+    productName:productName.toString(),
+    unitOfMeasure:unitOfMeasure.toString(),
     qty: Number(qty),
     restrictedProduct: false,
   });
