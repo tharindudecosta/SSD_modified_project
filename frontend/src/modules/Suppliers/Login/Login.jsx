@@ -15,6 +15,7 @@ import {
   SUPPLIERLOGIN,
   SUPPLIERS,
 } from "../../../utils/string";
+import GoogleLogin from "../../Google/GoogleLogin";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -89,6 +90,7 @@ const Login = () => {
         >
           Submit
         </button>
+        <GoogleLogin path={SUPPLIERS} user={SUPPLIER}/>
       </form>
     </div>
   );

@@ -14,6 +14,8 @@ import {
   SUCCESS,
 } from "../../../utils/string";
 
+import GoogleLogin from "../../Google/GoogleLogin";
+
 const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
@@ -79,6 +81,8 @@ const Login = () => {
         >
           Submit
         </button>
+
+        <GoogleLogin path={MANAGERS} user={MANAGER}/>
       </form>
     </div>
   );
