@@ -22,10 +22,10 @@ const createContructionSite = (req, res) => {
   // }
 
   const contructionSite = new ContructionSite({
-    siteName: contructionSiteName,
-    siteAddress: contructionSiteAddress,
-    siteBudjet: contructionSiteBudget,
-    siteManager: contructionSiteManager,
+    siteName: contructionSiteName.toString(),
+    siteAddress: contructionSiteAddress.toString(),
+    siteBudjet: contructionSiteBudget.toString(),
+    siteManager: contructionSiteManager.toString(),
   });
 
   console.log(contructionSite);
@@ -61,11 +61,11 @@ const updateContructionSite = (req, res) => {
   } = req.body;
 
   const site = new ContructionSite({
-    siteName: contructionSiteName,
-    siteAddress: contructionSiteAddress,
-    siteBudjet: contructionSiteBudget,
-    siteManager: contructionSiteManager,
-    customId: customId,
+    siteName: contructionSiteName.toString(),
+    siteAddress: contructionSiteAddress.toString(),
+    siteBudjet: contructionSiteBudget.toString(),
+    siteManager: contructionSiteManager.toString(),
+    customId: customId.toString(),
   });
 
   ContructionSite.updateOne({ customId: customId }, { site }, (err, data) => {
