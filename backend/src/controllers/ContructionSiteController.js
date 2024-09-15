@@ -68,7 +68,7 @@ const updateContructionSite = (req, res) => {
     customId: customId.toString(),
   });
 
-  ContructionSite.updateOne({ customId: customId }, { site }, (err, data) => {
+  ContructionSite.updateOne({ customId: customId.toString() }, { site }, (err, data) => {
     if (err) res.status(500).json({ error: err });
     res.status(201).json(data);
   });
