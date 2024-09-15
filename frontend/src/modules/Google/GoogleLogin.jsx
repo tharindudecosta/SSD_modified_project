@@ -9,7 +9,7 @@ import {
 import { useGlobalState } from "../../utils";
 
 const client_id = "545890069172-vedknji7le2114ompk2l5nq5830pn3g6.apps.googleusercontent.com";
-const secret = "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"
+// const secret = "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"
 
 function GoogleLogin(props) {
     const navigate = useNavigate();
