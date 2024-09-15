@@ -97,7 +97,7 @@ const updateSiteManager = (req, res) => {
     customId:customId.toString()
   });
 
-  SiteManager.updateOne({customId:customId},{siteManager}, (err, data) => {
+  SiteManager.updateOne({customId:customId.toString()},{siteManager}, (err, data) => {
     if (err) res.status(500).json({ error: err });
     res.status(201).json(data);
   });

@@ -146,7 +146,7 @@ const updateManager = (req, res) => {
     customId: customId.toString(),
   });
 
-  Manager.updateOne({ customId: customId }, { newManager }, (err, data) => {
+  Manager.updateOne({ customId: customId.toString() }, { newManager }, (err, data) => {
     if (err) res.status(500).json({ error: err });
     res.status(201).json(data);
   });
