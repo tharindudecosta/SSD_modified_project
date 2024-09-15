@@ -1,7 +1,17 @@
 import { OrderRequest, SiteManager } from "../models/index.js";
 
+const isValidEmail = (email) => {
+  const regex = /^\S+@\S+\.\S+$/;
+  return regex.test(email);
+};
+
+
 const createSiteManager = (req, res) => {
   const { employeeName, contactNumber, email, password,customId } = req.body;
+
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
 
   const siteManager = new SiteManager({
     employeeName:employeeName.toString(),
@@ -27,9 +37,11 @@ const getSiteMangers = (req, res) => {
 const loginSiteManager = (req, res) => {
   const { email, password } = req.body;
 
-
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
   
-  SiteManager.findOne({ email: email }, (err, doc) => {
+  SiteManager.findOne({ email: email.toString() }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "SiteManager not found" });
     }
@@ -71,6 +83,10 @@ const deleteSiteManager =  (req, res)=>{
 
 const updateSiteManager = (req, res) => {
   const { employeeName, newContactNumber, newEmail, password,customId } = req.body;
+
+  if(!isValidEmail(newEmail.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
 
   const siteManager = new SiteManager({
     employeeName:employeeName.toString(),

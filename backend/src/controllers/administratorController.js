@@ -1,7 +1,16 @@
 import { Administrator } from "../models/index.js";
 
+const isValidEmail = (email) => {
+  const regex = /^\S+@\S+\.\S+$/;
+  return regex.test(email);
+};
+
 const createAdministrator = (req, res) => {
   const { employeeName, contactNumber, email, password } = req.body;
+
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
 
   const manager = new Administrator({
     employeeName:employeeName.toString(),
@@ -19,9 +28,11 @@ const createAdministrator = (req, res) => {
 const loginAdministrator = (req, res) => {
   const { email, password } = req.body;
 
-// email check
-
-  Administrator.findOne({ email: email }, (err, doc) => {
+  if(!isValidEmail(email.toString())){
+    res.status(500).json({ error: "Invalid Email" })
+  }
+  
+  Administrator.findOne({ email: email.toString() }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "Administrator not found" });
     }
