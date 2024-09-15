@@ -1,7 +1,8 @@
 import { OrderRequest, SiteManager } from "../models/index.js";
 
 const isValidEmail = (email) => {
-  const regex = /^\S+@\S+\.\S+$/;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+;
   return regex.test(email);
 };
 
