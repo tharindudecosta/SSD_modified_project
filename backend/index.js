@@ -19,7 +19,7 @@ log.enableAll();
 const app = express();
 
 app.disable('x-powered-by');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 app.use(helmet());
 
 app.use(cookieParser());
