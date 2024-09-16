@@ -4,6 +4,9 @@ import log from "loglevel";
 import cors from "cors";
 import mongoose from "mongoose";
 import swaggerJsDoc from "swagger-jsdoc";
+import cookieParser from "cookie-parser"; // Required for CSRF token storage in cookies
+import csrf from "csurf"; // CSRF middleware
+import helmet from "helmet";
 
 import routes from "./src/routes/index.js";
 // import swaggeroption from "./src/utils/swaggerConfig.js";
@@ -19,15 +22,31 @@ app.disable('x-powered-by');
 const helmet = require('helmet');
 app.use(helmet());
 
+app.use(cookieParser());
+
+const csrfProtection = csrf({ cookie: true });
+
+app.use(csrfProtection);
+
 app.use(express.json());
 app.use(cors());
 // const specs = swaggerJsDoc(swaggeroption);
 
-app.get("/", (req, res) => {
-  res.sendStatus(200);
+app.get("/", csrfProtection, (req, res) => {
+  res.sendStatus(200).json({ message: "Welcome", csrfToken: req.csrfToken() });
 });
 
 app.use("/api", routes);
+
+
+// Error handling for CSRF token
+app.use((err, req, res, next) => {
+  if (err.code === 'EBADCSRFTOKEN') {
+    res.status(403).json({ error: 'Invalid CSRF token' });
+  } else {
+    next(err);
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 
