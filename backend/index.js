@@ -14,6 +14,11 @@ dotenv.config();
 log.enableAll();
 
 const app = express();
+
+app.disable('x-powered-by');
+const helmet = require('helmet');
+app.use(helmet());
+
 app.use(express.json());
 app.use(cors());
 // const specs = swaggerJsDoc(swaggeroption);

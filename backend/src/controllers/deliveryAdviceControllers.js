@@ -1,5 +1,7 @@
 import DeliveryAdvice from "../models/deliveryAdvice.js";
 
+const logger = require('winston');
+
 const createDeliveryAdvice = (req, res) => {
   const { order } = req.body;
 
@@ -24,7 +26,10 @@ const approveDeliveryAdviceRequest = (req, res) => {
     data.isApproved = true;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error approving delivery request:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while approving delivery request.' });
+      }
       res.json({ status: "Delivery Advice Request Approved successfully!" });
     });
   });
@@ -41,7 +46,10 @@ const saveDeliveryAdviceAsDraft = (req, res) => {
     data.isApproved = false;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error saving draft:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while saving draft.' });
+      }
       res.json({ status: "Order Request Approved successfully!" });
     });
   });
