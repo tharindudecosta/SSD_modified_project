@@ -1,6 +1,7 @@
 import DeliveryAdvice from "../models/deliveryAdvice.js";
 
-const logger = require('winston');
+// const logger = require('winston');
+import logger from '../utils/logger.js'; 
 
 const createDeliveryAdvice = (req, res) => {
   const { order } = req.body;

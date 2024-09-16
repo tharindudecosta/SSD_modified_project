@@ -1,6 +1,7 @@
 import { Manager, OrderRequest, Product } from "../models/index.js";
 
-const logger = require('winston');
+// const logger = require('winston');
+import logger from '../utils/logger.js'; 
 
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
