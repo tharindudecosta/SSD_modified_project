@@ -1,5 +1,7 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
 
+const logger = require('winston');
+
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 ;
@@ -74,7 +76,13 @@ const createMaterialQuotation = (req, res) => {
       data.materials.push(product);
 
       data.save(function (err) {
-        if (err) return res.send(err);
+        if (err) {
+          // Log the actual error details
+          logger.error('Error saving Product:', err);
+        
+          // Send generic error message to client
+          return res.status(500).json({ error: 'Internal server error occurred while saving' });
+        }
         res.json({ status: "Product added successfully!" });
       });
     });
@@ -126,7 +134,10 @@ const placeSupplierQuotation = (req, res) => {
     data.unitPrice = price;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error placing Quotation:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while placing Quotation.' });
+      }
       res.json({ status: "Order Request Approved successfully!" });
     });
   });

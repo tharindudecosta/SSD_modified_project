@@ -1,5 +1,7 @@
 import { Manager, OrderRequest, Product } from "../models/index.js";
 
+const logger = require('winston');
+
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 ;
@@ -73,7 +75,10 @@ const approveRequest = (req, res) => {
     data.isPlaced = true;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error approving request:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while approving request.' });
+      }
       res.json({ status: "Order Request Approved successfully!" });
     });
   });
@@ -90,7 +95,10 @@ const declineRequest = (req, res) => {
     data.isApproved = false;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error declining request:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while declining request.' });
+      }
       res.json({ status: "Order Request Approved successfully!" });
     });
   });
@@ -107,7 +115,10 @@ const approveQuotations = (req, res) => {
     data.isApproved = true;
 
     data.save(function (err) {
-      if (err) return res.send(err);
+      if (err) {
+        logger.error('Error approving Quotation:', err);
+        return res.status(500).json({ error: 'Internal server error occurred while approving Quotation.' });
+      }
       res.json({ status: "Product Approved successfully!" });
     });
   });
