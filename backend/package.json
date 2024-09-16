@@ -17,14 +17,19 @@
     "supertest": "^6.1.6"
   },
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "csurf": "^1.11.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "helmet": "^7.1.0",
     "ip": "^2.0.0",
     "loglevel": "^1.8.0",
     "mongoose": "^6.5.2",
     "supertokens-node": "^12.0.4",
     "swagger-jsdoc": "^6.2.5",
-    "swagger-ui-express": "^4.5.0"
+    "swagger-ui-express": "^4.5.0",
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0"
   }
 }
