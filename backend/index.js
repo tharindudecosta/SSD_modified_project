@@ -24,10 +24,12 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes);
 
-const PORT = process.env.PORT || 5000;
+const DB_URL = "mongodb+srv://user1:User1pss@cluster0.obfkb3h.mongodb.net/csse?retryWrites=true&w=majority"
+
+const PORT = 5000;
 
 // Connect to Database
-mongoose.connect(process.env.DB_URL, {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
 
