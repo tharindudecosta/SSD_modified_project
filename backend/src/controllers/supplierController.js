@@ -103,6 +103,9 @@ const loginSupplier = (req, res) => {
     res.status(500).json({ error: "Invalid Email" })
   }
 
+
+  
+
   Supplier.findOne({ email: email.toString() }, (err, doc) => {
     if (err) {
       return res.status(400).json({ response: "Supplier not found" });

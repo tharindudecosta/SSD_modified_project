@@ -19,6 +19,7 @@ import GoogleLogin from "../../Google/GoogleLogin";
 const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
+  const [userId, setUserId] = useGlobalState("userId");
 
   const [login, setLogin] = useState({
     email: "",
@@ -43,6 +44,7 @@ const Login = () => {
         localStorage.setItem('jwtToken', jwtToken);
         console.log(jwtToken)
       }
+      setUserId(res.data.doc._id);
 
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(MANAGER);

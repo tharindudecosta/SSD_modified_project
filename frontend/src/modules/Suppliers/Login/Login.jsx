@@ -21,6 +21,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
   const [supplierId, setSuppliersId] = useGlobalState("supplierId");
+  const [userId, setUserId] = useGlobalState("userId");
 
   const [login, setLogin] = useState({
     email: "",
@@ -50,11 +51,14 @@ const Login = () => {
         setUser(SUPPLIER);
         console.log("Supplier id", res.data.doc._id);
         setSuppliersId(res.data.doc._id);
+        setUserId(res.data.doc._id);
         navigate(SUPPLIERS);
       });
     })
     .catch((err) =>{
       Swal.fire(LOGIN, LOGIN_UNSUCCCESSFUL, UNSUCCESS).then(() => {
+        console.log(err);
+        
       });
     });
   };

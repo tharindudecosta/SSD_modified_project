@@ -20,6 +20,12 @@ const Quote = ({ product, supplier }) => {
         ).then(() => {
           navigate("/suppliers");
         });
+      })
+      .catch((err) =>{
+        Swal.fire("Error", "UNSUCCCESSFUL", "UNSUCCESS").then(() => {
+          console.log(err);
+          
+        });
       });
   };
 
