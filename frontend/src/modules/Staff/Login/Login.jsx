@@ -36,10 +36,15 @@ const Login = () => {
     e.preventDefault();
 
     axiosclient.post("/api/admin/login", login).then((res) => {
+      const token = res.data.token;
+      if (token && token.startsWith('Bearer ')) {
+        const jwtToken = token.split(' ')[1];
+        localStorage.setItem('jwtToken', jwtToken);
+      }
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
+        setUser(STAFF);
         navigate(SUPPLIERS);
         navigate("/suppliers");
-        setUser(STAFF);
       });
     });
   };

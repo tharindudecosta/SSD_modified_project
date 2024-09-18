@@ -1,4 +1,9 @@
 import { Administrator } from "../models/index.js";
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = 'jwt_secret_key';
+
+const STAFF = "staff";
 
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,7 +43,9 @@ const loginAdministrator = (req, res) => {
     }
 
     if (doc.password === password) {
-      res.status(200).json(doc);
+
+      const token = jwt.sign({userId: doc._id,userType:STAFF}, JWT_SECRET, { expiresIn: "1h", });
+      res.status(200).json({doc:doc,token: `Bearer ${token}`});
       return;
     }
 

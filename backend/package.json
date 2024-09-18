@@ -24,6 +24,7 @@
     "express": "^4.18.1",
     "helmet": "^7.1.0",
     "ip": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
     "loglevel": "^1.8.0",
     "mongoose": "^6.5.2",
     "supertokens-node": "^12.0.4",

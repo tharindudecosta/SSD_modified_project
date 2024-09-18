@@ -36,7 +36,14 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    axiosclient.post(LOGIN_MANAGER, login).then(() => {
+    axiosclient.post(LOGIN_MANAGER, login).then((res) => {
+      const token = res.data.token;
+      if (token && token.startsWith('Bearer ')) {
+        const jwtToken = token.split(' ')[1];
+        localStorage.setItem('jwtToken', jwtToken);
+        console.log(jwtToken)
+      }
+
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(MANAGER);
         navigate(MANAGERS);

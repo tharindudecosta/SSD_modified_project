@@ -38,10 +38,15 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     axiosclient.post(LOGINSITEMANAGER, login).then((res) => {
+      const token = res.data.token;
+      if (token && token.startsWith('Bearer ')) {
+        const jwtToken = token.split(' ')[1];
+        localStorage.setItem('jwtToken', jwtToken);
+      }
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(SITEMANAGER);
         navigate(MANAGERS);
-        setSiteManagerId(res.data._id);
+        setSiteManagerId(res.data.doc._id);
       });
     });
   };

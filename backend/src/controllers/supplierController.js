@@ -1,5 +1,11 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
 
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = 'jwt_secret_key';
+
+const SUPPLIER = "supplier";
+
 // const logger = require('winston');
 import logger from '../utils/logger.js'; 
 
@@ -103,7 +109,9 @@ const loginSupplier = (req, res) => {
     }
     console.log(doc);
     if (doc.password === password) {
-      res.status(200).json(doc);
+
+      const token = jwt.sign({userId: doc._id,userType:SUPPLIER}, JWT_SECRET, { expiresIn: "1h", });
+      res.status(200).json({doc:doc,token: `Bearer ${token}`});
       return;
     }
 
