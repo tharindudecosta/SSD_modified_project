@@ -19,7 +19,7 @@ import GoogleLogin from "../../Google/GoogleLogin";
 const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
-  const [userId, setUserId] = useGlobalState("userId");
+  
 
   const [login, setLogin] = useState({
     email: "",
@@ -39,12 +39,14 @@ const Login = () => {
     e.preventDefault();
     axiosclient.post(LOGIN_MANAGER, login).then((res) => {
       const token = res.data.token;
+      const userId = res.data.doc._id 
       if (token && token.startsWith('Bearer ')) {
         const jwtToken = token.split(' ')[1];
         localStorage.setItem('jwtToken', jwtToken);
+        localStorage.setItem('userId', userId.toString());
         console.log(jwtToken)
       }
-      setUserId(res.data.doc._id);
+      
 
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(MANAGER);

@@ -21,7 +21,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
   const [supplierId, setSuppliersId] = useGlobalState("supplierId");
-  const [userId, setUserId] = useGlobalState("userId");
+  
 
   const [login, setLogin] = useState({
     email: "",
@@ -43,15 +43,17 @@ const Login = () => {
     axiosclient.post(SUPPLIERLOGIN, login).then((res) => {
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         
-        const token = res.data.token;        
+        const token = res.data.token; 
+        const userId = res.data.doc._id       
         if (token && token.startsWith('Bearer ')) {
           const jwtToken = token.split(' ')[1];
           localStorage.setItem('jwtToken', jwtToken);
+          localStorage.setItem('userId', userId.toString());
         }
         setUser(SUPPLIER);
         console.log("Supplier id", res.data.doc._id);
         setSuppliersId(res.data.doc._id);
-        setUserId(res.data.doc._id);
+        
         navigate(SUPPLIERS);
       });
     })

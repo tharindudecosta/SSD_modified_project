@@ -20,7 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
   const [siteMangerId, setSiteManagerId] = useGlobalState("siteManagerId");
-  const [userId, setUserId] = useGlobalState("userId");
+  
 
   const [login, setLogin] = useState({
     email: "",
@@ -40,11 +40,13 @@ const Login = () => {
     e.preventDefault();
     axiosclient.post(LOGINSITEMANAGER, login).then((res) => {
       const token = res.data.token;
+      const userId = res.data.doc._id 
       if (token && token.startsWith('Bearer ')) {
         const jwtToken = token.split(' ')[1];
         localStorage.setItem('jwtToken', jwtToken);
+        localStorage.setItem('userId', userId.toString());
       }
-      setUserId(res.data.doc._id);
+      
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(SITEMANAGER);
         navigate(MANAGERS);
