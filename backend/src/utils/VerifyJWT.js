@@ -4,7 +4,7 @@ const JWT_SECRET = 'jwt_secret_key';
 
 const verifyJWT = (req, res, next) => {
   const token = req.headers['authorization'];
-  console.log(token)
+  const userId = req.headers['userId'];
   if (!token) {
     return res.status(403).json({ message: 'No token provided' });
   }
