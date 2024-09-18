@@ -20,6 +20,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [user, setUser] = useGlobalState("user");
   const [siteMangerId, setSiteManagerId] = useGlobalState("siteManagerId");
+  const [userId, setUserId] = useGlobalState("userId");
 
   const [login, setLogin] = useState({
     email: "",
@@ -43,6 +44,7 @@ const Login = () => {
         const jwtToken = token.split(' ')[1];
         localStorage.setItem('jwtToken', jwtToken);
       }
+      setUserId(res.data.doc._id);
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
         setUser(SITEMANAGER);
         navigate(MANAGERS);

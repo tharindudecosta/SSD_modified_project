@@ -4,6 +4,7 @@ const initialState = {
   supplierId: "",
   user: null,
   siteManagerId: "",
+  userId: ""
 };
 const { useGlobalState } = createGlobalState(initialState);
 
