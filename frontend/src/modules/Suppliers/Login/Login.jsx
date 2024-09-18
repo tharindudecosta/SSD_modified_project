@@ -41,9 +41,15 @@ const Login = () => {
     console.log(login);
     axiosclient.post(SUPPLIERLOGIN, login).then((res) => {
       Swal.fire(LOGIN, LOGIN_SUCCCESSFUL, SUCCESS).then(() => {
+        
+        const token = res.data.token;        
+        if (token && token.startsWith('Bearer ')) {
+          const jwtToken = token.split(' ')[1];
+          localStorage.setItem('jwtToken', jwtToken);
+        }
         setUser(SUPPLIER);
-        console.log("Supplier id", res.data._id);
-        setSuppliersId(res.data._id);
+        console.log("Supplier id", res.data.doc._id);
+        setSuppliersId(res.data.doc._id);
         navigate(SUPPLIERS);
       });
     })

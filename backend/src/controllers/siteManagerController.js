@@ -1,4 +1,10 @@
 import { OrderRequest, SiteManager } from "../models/index.js";
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = 'jwt_secret_key';
+
+const SITEMANAGER = "sitemanager";
+
 
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -48,7 +54,9 @@ const loginSiteManager = (req, res) => {
     }
 
     if (doc.password === password) {
-      res.status(200).json(doc);
+
+      const token = jwt.sign({userId: doc._id,userType:SITEMANAGER}, JWT_SECRET, { expiresIn: "1h", });
+      res.status(200).json({doc:doc,token: `Bearer ${token}`});
       return;
     }
 

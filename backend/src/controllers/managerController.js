@@ -1,4 +1,9 @@
 import { Manager, OrderRequest, Product } from "../models/index.js";
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = 'jwt_secret_key';
+
+const MANAGER = "manager";
 
 // const logger = require('winston');
 import logger from '../utils/logger.js'; 
@@ -56,7 +61,9 @@ const loginManager = (req, res) => {
     }
 
     if (doc.password && doc.password === password) {
-      res.status(200).json(doc);
+
+      const token = jwt.sign({userId: doc._id,userType: MANAGER}, JWT_SECRET, { expiresIn: "1h", });
+      res.status(200).json({doc:doc,token: `Bearer ${token}`});
       return;
     }
 
