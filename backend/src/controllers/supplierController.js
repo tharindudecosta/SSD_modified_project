@@ -1,9 +1,8 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
-
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = 'jwt_secret_key';
-
+const {JWT_SECRET} = process.env;
 const SUPPLIER = "supplier";
 
 // const logger = require('winston');
@@ -15,29 +14,59 @@ const isValidEmail = (email) => {
   return regex.test(email);
 };
 
+const createSupplier = async (req, res) => {
+  const { supplierName, address, contactPerson, email, fax, password } = req.body;
 
-const createSupplier = (req, res) => {
-  const { supplierName, address, contactPerson, email, fax, password } =
-    req.body;
-
-  if(!isValidEmail(email.toString())){
-    res.status(500).json({ error: "Invalid Email" })
+  if (!isValidEmail(email.toString())) {
+    return res.status(500).json({ error: "Invalid Email" });
   }
 
-  const supplier = new Supplier({
-    supplierName:supplierName.toString(),
-    address:address.toString(),
-    contactPerson:contactPerson.toString(),
-    email:email.toString(),
-    fax:fax.toString(),
-    password:password.toString(),
-  });
-  Supplier.create(supplier, (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ error: err });}
-    
-    res.status(201).json(data);
+  try {
+    const hashedPassword = await bcrypt.hash(password.toString(), 10);
+
+    const supplier = new Supplier({
+      supplierName: supplierName.toString(),
+      address: address.toString(),
+      contactPerson: contactPerson.toString(),
+      email: email.toString(),
+      fax: fax.toString(),
+      password: hashedPassword,
+    });
+
+    Supplier.create(supplier, (err, data) => {
+      if (err) {
+        res.status(500).json({ error: err });
+      }
+      res.status(201).json(data);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error creating supplier" });
+  }
+};
+
+const loginSupplier = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!isValidEmail(email.toString())) {
+    return res.status(500).json({ error: "Invalid Email" });
+  }
+
+  Supplier.findOne({ email: email.toString() }, async (err, doc) => {
+    if (err || !doc) {
+      return res.status(400).json({ response: "Supplier not found" });
+    }
+
+    try {
+      const isMatch = await bcrypt.compare(password.toString(), doc.password);
+      if (isMatch) {
+        const token = jwt.sign({ userId: doc._id, userType: SUPPLIER }, JWT_SECRET, { expiresIn: "1h" });
+        res.status(200).json({ doc: doc, token: `Bearer ${token}` });
+      } else {
+        res.status(400).json({ response: "Invalid credentials" });
+      }
+    } catch (error) {
+      res.status(500).json({ response: "Error logging in" });
+    }
   });
 };
 
@@ -93,32 +122,6 @@ const createMaterialQuotation = (req, res) => {
         res.json({ status: "Product added successfully!" });
       });
     });
-  });
-};
-
-const loginSupplier = (req, res) => {
-  const { email, password } = req.body;
-
-  if(!isValidEmail(email.toString())){
-    res.status(500).json({ error: "Invalid Email" })
-  }
-
-
-  
-
-  Supplier.findOne({ email: email.toString() }, (err, doc) => {
-    if (err) {
-      return res.status(400).json({ response: "Supplier not found" });
-    }
-    console.log(doc);
-    if (doc.password === password) {
-
-      const token = jwt.sign({userId: doc._id,userType:SUPPLIER}, JWT_SECRET, { expiresIn: "1h", });
-      res.status(200).json({doc:doc,token: `Bearer ${token}`});
-      return;
-    }
-
-    return res.status(400).json({ response: "Supplier not found" });
   });
 };
 

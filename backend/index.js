@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 
 app.use("/api", routes);
 
-const DB_URL = "mongodb+srv://user1:User1pss@cluster0.obfkb3h.mongodb.net/csse?retryWrites=true&w=majority"
+const DB_URL = process.env.DB_URL;
 
 const PORT = 5000;
 
