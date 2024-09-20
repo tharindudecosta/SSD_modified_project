@@ -1,7 +1,8 @@
 import { Manager, OrderRequest, Product } from "../models/index.js";
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = 'jwt_secret_key';
+const {JWT_SECRET} = process.env;
 
 const MANAGER = "manager";
 
@@ -15,30 +16,95 @@ const isValidEmail = (email) => {
 };
 
 
-const createManager = (req, res) => {
-  const { manName, department, contactNumber, email, password, customId } =
-    req.body;
+const createManager = async (req, res) => {
+  const { manName, department, contactNumber, email, password, customId } = req.body;
 
-  if(!isValidEmail(email.toString())){
-    res.status(500).json({ error: "Invalid Email" })
+  if (!isValidEmail(email.toString())) {
+    return res.status(500).json({ error: "Invalid Email" });
   }
-    
-  const manager = new Manager({
-    manName:manName.toString(),
-    department:department.toString(),
-    contactNumber:contactNumber.toString(),
-    email:email.toString(),
-    password:password.toString(),
-    customId:customId.toString(),
-  });
 
-  Manager.create(manager, (err, data) => {
-    if (err) {
-      res.status(500).json({ error: err });
-      console.log(err);
+  try {
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password.toString(), 10);
+
+    const manager = new Manager({
+      manName: manName.toString(),
+      department: department.toString(),
+      contactNumber: contactNumber.toString(),
+      email: email.toString(),
+      password: hashedPassword,  // Store hashed password
+      customId: customId.toString(),
+    });
+
+    Manager.create(manager, (err, data) => {
+      if (err) {
+        return res.status(500).json({ error: err });
+      }
+      res.status(201).json(data);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error creating manager" });
+  }
+};
+
+const loginManager = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!isValidEmail(email.toString())) {
+    return res.status(500).json({ error: "Invalid Email" });
+  }
+
+  Manager.findOne({ email: email.toString() }, async (err, doc) => {
+    if (err || !doc) {
+      return res.status(400).json({ response: "Manager not found" });
     }
-    res.status(201).json(data);
+
+    try {
+      // Compare the hashed password with the input password
+      const isMatch = await bcrypt.compare(password.toString(), doc.password);
+      if (isMatch) {
+        const token = jwt.sign({ userId: doc._id, userType: MANAGER }, JWT_SECRET, { expiresIn: "1h" });
+        res.status(200).json({ doc: doc, token: `Bearer ${token}` });
+      } else {
+        res.status(400).json({ response: "Invalid credentials" });
+      }
+    } catch (error) {
+      res.status(500).json({ response: "Error logging in" });
+    }
   });
+};
+
+const updateManager = async (req, res) => {
+  const { manName, department, contactNumber, email, password, customId } = req.body;
+
+  if (!isValidEmail(email.toString())) {
+    return res.status(500).json({ error: "Invalid Email" });
+  }
+
+  try {
+    let hashedPassword = password;
+
+    // If the password is being updated, hash the new password
+    if (password) {
+      hashedPassword = await bcrypt.hash(password.toString(), 10);
+    }
+
+    const updatedManager = {
+      manName: manName.toString(),
+      department: department.toString(),
+      contactNumber: contactNumber.toString(),
+      email: email.toString(),
+      password: hashedPassword.toString(),
+      customId: customId.toString(),
+    };
+
+    Manager.updateOne({ customId: customId.toString() }, updatedManager, (err, data) => {
+      if (err) return res.status(500).json({ error: err });
+      res.status(201).json(data);
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error updating manager" });
+  }
 };
 
 const getManagers = (req, res) => {
@@ -48,28 +114,6 @@ const getManagers = (req, res) => {
   });
 };
 
-const loginManager = (req, res) => {
-  const { email, password } = req.body;
-
-  if(!isValidEmail(email.toString())){
-    res.status(500).json({ error: "Invalid Email" })
-  }
-
-  Manager.findOne({ email: email.toString() }, (err, doc) => {
-    if (err) {
-      return res.status(400).json({ response: "Manager not found" });
-    }
-
-    if (doc.password && doc.password === password) {
-
-      const token = jwt.sign({userId: doc._id,userType: MANAGER}, JWT_SECRET, { expiresIn: "1h", });
-      res.status(200).json({doc:doc,token: `Bearer ${token}`});
-      return;
-    }
-
-    return res.status(400).json({ response: "Manager not found" });
-  });
-};
 
 const approveRequest = (req, res) => {
   const { orderRequestId } = req.params;
@@ -143,29 +187,6 @@ const deleteManager = (req, res) => {
   const { customId } = req.params;
 
   Manager.findOneAndDelete({ customId: customId }, (err, data) => {
-    if (err) res.status(500).json({ error: err });
-    res.status(201).json(data);
-  });
-};
-
-const updateManager = (req, res) => {
-  const { manName, department, contactNumber, email, password, customId } =
-    req.body;
-
-  if(!isValidEmail(email)){
-    res.status(500).json({ error: "Invalid Email" })
-  }
-
-  const newManager = new Manager({
-    manName: manName.toString(),
-    department: department.toString(),
-    contactNumber: contactNumber.toString(),
-    email: email.toString(),
-    password: password.toString(),
-    customId: customId.toString(),
-  });
-
-  Manager.updateOne({ customId: customId.toString() }, { newManager }, (err, data) => {
     if (err) res.status(500).json({ error: err });
     res.status(201).json(data);
   });
