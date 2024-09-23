@@ -1,6 +1,17 @@
 import jwt from 'jsonwebtoken';
+import { jwtDecode } from "jwt-decode";
 
 const {JWT_SECRET} = process.env;
+
+const verifyUser = (token,userId) =>{
+  const decoded = JSON.stringify(jwtDecode(token));
+
+  if (decoded.userId === userId){
+    return true;
+  }
+
+  return false;
+}
 
 const verifyJWT = (req, res, next) => {
   const token = req.headers['authorization'];
@@ -23,7 +34,10 @@ const verifyJWT = (req, res, next) => {
     }
 
     req.user = decoded;
-
+    if(!verifyUser(tokenValue,userId)){
+      return res.status(403).json({ message: 'Unauthorized, invalid token' });
+    }
+    
     next();
   });
 };
