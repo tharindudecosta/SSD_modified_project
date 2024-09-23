@@ -1,8 +1,10 @@
 import { Administrator } from "../models/index.js";
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';  
+import bcrypt from 'bcryptjs';
+import dotenv from "dotenv";
 
-const { JWT_SECRET } = process.env;
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 const STAFF = "staff";
 
 const isValidEmail = (email) => {

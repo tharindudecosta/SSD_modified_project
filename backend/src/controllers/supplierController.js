@@ -1,8 +1,10 @@
 import { OrderRequest, Product, Supplier } from "../models/index.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import dotenv from "dotenv";
 
-const {JWT_SECRET} = process.env;
+dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
 const SUPPLIER = "supplier";
 
 // const logger = require('winston');
@@ -35,6 +37,7 @@ const createSupplier = async (req, res) => {
 
     Supplier.create(supplier, (err, data) => {
       if (err) {
+        console.log(err)
         res.status(500).json({ error: err });
       }
       res.status(201).json(data);

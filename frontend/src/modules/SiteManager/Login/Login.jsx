@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import Cookies from 'js-cookie';
 
 import { axiosclient } from "../../../api";
 import { useGlobalState } from "../../../utils";
@@ -43,7 +44,13 @@ const Login = () => {
       const userId = res.data.doc._id 
       if (token && token.startsWith('Bearer ')) {
         const jwtToken = token.split(' ')[1];
-        localStorage.setItem('jwtToken', jwtToken);
+
+        const userData = {
+          jwtToken: jwtToken,
+          userId: userId
+        };
+
+        Cookies.set('cookieData', JSON.stringify(userData), { expires: 1 });
         localStorage.setItem('userId', userId.toString());
       }
       
@@ -51,6 +58,12 @@ const Login = () => {
         setUser(SITEMANAGER);
         navigate(MANAGERS);
         setSiteManagerId(res.data.doc._id);
+      });
+    })
+    .catch((err) =>{
+      Swal.fire(LOGIN, err.response.data.response, "").then(() => {
+        console.log(err);
+        
       });
     });
   };

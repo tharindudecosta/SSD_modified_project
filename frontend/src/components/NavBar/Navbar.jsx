@@ -7,6 +7,7 @@ import {
   signOut,
 } from "supertokens-auth-react/recipe/session";
 import { useGlobalState } from "../../utils";
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
   const [isDarkMode, setDarkMode] = useState(false);
@@ -45,6 +46,10 @@ const Navbar = () => {
     window.location.href = "/";
   };
 
+  const clearUserData = () => {
+    Cookies.remove('cookieData');
+  };
+  
   return (
     <>
       <nav
@@ -86,6 +91,7 @@ const Navbar = () => {
                 className="text-white"
                 onClick={() => {
                   navigate("/");
+                  clearUserData();
                 }}
               >
                 Logout

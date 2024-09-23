@@ -126,6 +126,12 @@ const AddSuppliers = () => {
       ).then(() => {
         navigate("/suppliers");
       });
+    })
+    .catch((err) =>{
+      Swal.fire("Supplier add failed", err.response.data.response, "faliure").then(() => {
+        console.log(err);
+        
+      });
     });
   };
 
