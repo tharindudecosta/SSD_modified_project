@@ -60,6 +60,10 @@ import {
   loginAdministrator,
 } from "./administratorController.js";
 
+import {
+  loginGoogleAuth
+} from "./googleAuthController.js"
+
 export {
   // Suppliers
   createSupplier,
@@ -111,4 +115,6 @@ export {
   // Procument Officer
   createAdministrator,
   loginAdministrator,
+
+  loginGoogleAuth
 };

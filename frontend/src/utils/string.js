@@ -6,6 +6,7 @@ const LOGIN_MANAGER = "/api/managers/login";
 const LOGINSITEMANAGER = "/api/sitemanagers/login";
 const SUPPLIERLOGIN = "/api/supplier/login";
 const STAFFLOGIN = "/api/staff/login";
+const GOOGLEAUTHLOGIN = "/api/google/auth";
 const LOGIN = "Login";
 const LOGIN_SUCCCESSFUL = "Login successful!";
 const LOGIN_UNSUCCCESSFUL = "Login unsuccessful!";
@@ -30,4 +31,5 @@ export {
   STAFF,
   STAFFLOGIN,
   SUPPLIERS,
+  GOOGLEAUTHLOGIN
 };
