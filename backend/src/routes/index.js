@@ -6,6 +6,7 @@ import managerRoutes from "./managerRoutes.js";
 import orderRequestRoutes from "./orderRequestRoutes.js";
 import deliveryAdviceRoutes from "./deliveryAdviceRoutes.js";
 import administratorRoutes from "./adminRoutes.js";
+import googleRoutes from "./googleAuthRoutes.js"
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.use("/managers", managerRoutes);
 router.use("/orderrequests", orderRequestRoutes);
 router.use("/deliveryadvice", deliveryAdviceRoutes);
 router.use("/admin", administratorRoutes);
+router.use("/google", googleRoutes);
 
 export default router;
