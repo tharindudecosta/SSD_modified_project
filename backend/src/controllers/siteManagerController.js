@@ -2,6 +2,11 @@ import { OrderRequest, SiteManager } from "../models/index.js";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from "dotenv";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidPhoneNumber,
+} from "../utils/validator.js"
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -9,17 +14,17 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const SITEMANAGER = "sitemanager";
 
 
-const isValidEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-;
-  return regex.test(email);
-};
-
 const createSiteManager = async (req, res) => {
   const { employeeName, contactNumber, email, password, customId } = req.body;
 
   if (!isValidEmail(email.toString())) {
     return res.status(500).json({ error: "Invalid Email" });
+  }
+  if (!isValidPassword(password.toString())) {
+    return res.status(500).json({ error: "Invalid Password" });
+  }
+  if (!isValidPhoneNumber(contactNumber.toString())) {
+    return res.status(500).json({ error: "Invalid contact Number" });
   }
 
   try {
@@ -77,7 +82,13 @@ const updateSiteManager = async (req, res) => {
   if (!isValidEmail(newEmail.toString())) {
     return res.status(500).json({ error: "Invalid Email" });
   }
-
+  if (!isValidPassword(password.toString())) {
+    return res.status(500).json({ error: "Invalid Password" });
+  }
+  if (!isValidPhoneNumber(newContactNumber.toString())) {
+    return res.status(500).json({ error: "Invalid contact Number" });
+  }
+  
   try {
     let hashedPassword = password;
 

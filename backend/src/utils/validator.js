@@ -3,7 +3,6 @@ const isValidString = (string) => {
 };
 
 const isValidCurrencyAmount = (currency) => {
-  // Change currency validation regex
   const regex = /^(0|[1-9]\d*)(\.\d{1,2})?$/;
   return regex.test(currency);
 };
