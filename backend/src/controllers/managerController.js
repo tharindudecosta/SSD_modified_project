@@ -12,7 +12,7 @@ const MANAGER = "manager";
 import logger from '../utils/logger.js'; 
 
 const isValidEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 ;
   return regex.test(email);
 };
@@ -26,7 +26,7 @@ const createManager = async (req, res) => {
   }
 
   try {
-    // Hash the password before saving
+    
     const hashedPassword = await bcrypt.hash(password.toString(), 10);
 
     const manager = new Manager({
@@ -34,7 +34,7 @@ const createManager = async (req, res) => {
       department: department.toString(),
       contactNumber: contactNumber.toString(),
       email: email.toString(),
-      password: hashedPassword,  // Store hashed password
+      password: hashedPassword, 
       customId: customId.toString(),
     });
 
